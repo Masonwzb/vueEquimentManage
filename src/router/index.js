@@ -56,6 +56,20 @@ export const constantRoutes = [
   },
 
   {
+    path: '/userManage',
+    component: Layout,
+    redirect: '/userManage/index',
+    children: [
+      {
+        path: 'userManage',
+        name: 'userManage',
+        component: () => import('@/views/userManage/index'),
+        meta: { title: 'userManage', icon: 'el-icon-user-solid' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
