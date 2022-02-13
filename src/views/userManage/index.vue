@@ -16,7 +16,7 @@
             @click="getList"
           >搜索</el-button>
           <el-button type="primary" @click="addNewUser">
-            <i class="el-icon-plus"></i><span>&nbsp;新增用户</span>
+            <i class="el-icon-plus" /><span>&nbsp;新增用户</span>
           </el-button>
         </el-col>
       </el-row>
