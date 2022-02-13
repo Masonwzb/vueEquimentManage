@@ -1,11 +1,11 @@
 <!--
  * @Description:
- * @FilePath: /vue-admin-template/src/App.vue
+ * @FilePath: /vue-equipment-manage/src/App.vue
  * @Version: 0.1
  * @Autor: sgx
  * @Date: 2022-02-13 11:54:15
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-13 13:55:09
+ * @LastEditTime: 2022-02-14 01:06:45
 -->
 <template>
   <div id="app">
@@ -19,13 +19,11 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+//设置表格最小高度
 ::v-deep .el-table__empty-block {
   min-height: 320px;
 }
-::v-deep .el-table__empty-text {
-  width: 100%;
-  display: block;
-}
+//表格空状态图片居中
 ::v-deep .el-table__body-wrapper {
   z-index: 2;
   position: static;
@@ -39,5 +37,9 @@ export default {
 ::v-deep .el-table__body-wrapper::-webkit-scrollbar-thumb {
   background-color: #c9cacf;
   border-radius: 6px;
+}
+//隐藏富文本底部广告
+::v-deep .mce-statusbar .mce-container-body{
+  display: none;
 }
 </style>

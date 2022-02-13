@@ -1,11 +1,11 @@
 <!--
  * @Description: 论坛
- * @FilePath: /vue-admin-template/src/views/comment/index.vue
+ * @FilePath: /vue-equipment-manage/src/views/comment/index.vue
  * @Version: 0.1
  * @Autor: sgx
  * @Date: 2022-02-13 12:10:58
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-13 17:11:08
+ * @LastEditTime: 2022-02-14 01:10:25
 -->
 <template>
   <div class="page-comment">
@@ -47,7 +47,7 @@
         label="标题"
         show-overflow-tooltip
         align="left"
-        min-width="600"
+        min-width="420"
       />
       <el-table-column prop="user" label="发布人" align="center" />
       <el-table-column prop="time" label="发布时间" align="center" />
@@ -65,20 +65,17 @@
         @current-change="handlePagination"
       />
     </div>
-    <div v-if="false" class="components-container">
-      <div>
-        <tinymce v-model="content" :height="300" />
-      </div>
-    </div>
+    <!-- 发布弹窗 -->
+    <add-comment :visible="releaseVisible" @handleClose="handleReleaseClose" />
   </div>
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
+import AddComment from './components/add-comment'
 export default {
   name: 'Comment',
   components: {
-    Tinymce
+    AddComment
   },
   data() {
     return {
@@ -93,12 +90,12 @@ export default {
           time: '2022-01-09 14:16:15'
         }
       ], // 评论列表
-      total: 0,
       pageObj: {
         pageSize: 10,
         pageNum: 1
       },
-      content: ''
+      total: 0,
+      releaseVisible: false // 是否显示发布弹窗
     }
   },
   mounted() {
@@ -136,12 +133,23 @@ export default {
       this.search()
     },
     /**
-     * @description: 发布帖子
+     * @description: 打开发布帖子弹窗
      * @param {*}
      * @return {*}
      * @author: sgx
      */
-    release() {},
+    release() {
+      this.releaseVisible = true
+    },
+    /**
+     * @description: 关闭发布帖子弹窗
+     * @param {*}
+     * @return {*}
+     * @author: sgx
+     */
+    handleReleaseClose() {
+      this.releaseVisible = false
+    },
     /**
      * @description: 选中行,并跳转到详情页
      * @param {*} row 被选中行的数据
