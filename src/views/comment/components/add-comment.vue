@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-14 00:50:06
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-14 01:04:17
+ * @LastEditTime: 2022-02-14 01:42:09
 -->
 <template>
   <el-dialog
@@ -14,12 +14,12 @@
     width="60%"
     :before-close="handleClose"
   >
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="标题：">
+    <el-form ref="form" :model="form" :rules="formRules" label-width="80px">
+      <el-form-item label="标题：" prop="title">
         <el-input v-model="form.title" />
       </el-form-item>
-      <el-form-item label="内容：">
-        <tinymce v-model="content" :height="300" />
+      <el-form-item label="内容：" prop="content">
+        <tinymce ref="commentTinymce" v-model="form.content" :height="300" />
       </el-form-item>
     </el-form>
     <span slot="footer" class="dialog-footer">
@@ -47,6 +47,9 @@ export default {
       form: {
         title: '',
         content: ''
+      },
+      formRules: {
+        title: [{ required: true, message: '请输入标题', trigger: 'blur' }]
       }
     }
   },
@@ -61,6 +64,11 @@ export default {
      * @author: sgx
      */
     handleClose() {
+      this.form = {
+        title: '',
+        content: ''
+      }
+      this.$refs.commentTinymce.setContent('')
       this.$emit('handleClose')
     },
     /**
