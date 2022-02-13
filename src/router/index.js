@@ -58,33 +58,48 @@ export const constantRoutes = [{
 },
 
 {
+  path: '/userManage',
+  component: Layout,
+  redirect: '/userManage/index',
+  children: [
+    {
+      path: 'userManage',
+      name: 'userManage',
+      component: () => import('@/views/userManage/index'),
+      meta: { title: 'userManage', icon: 'el-icon-user-solid' }
+    }
+  ]
+},
+
+{
   path: '/example',
   component: Layout,
   redirect: '/example/table',
   name: 'Example',
-  meta: {
-    title: 'Example',
-    icon: 'el-icon-s-help'
-  },
-  children: [{
-    path: 'table',
-    name: 'Table',
-    component: () => import('@/views/table/index'),
-    meta: {
-      title: 'Table',
-      icon: 'table'
+  meta: { title: 'Example', icon: 'el-icon-s-help' },
+  children: [
+    {
+      path: 'table',
+      name: 'Table',
+      component: () => import('@/views/table/index'),
+      meta: { title: 'Table', icon: 'table' }
+    },
+    {
+      path: 'tree',
+      name: 'Tree',
+      component: () => import('@/views/tree/index'),
+      meta: { title: 'Tree', icon: 'tree' }
     }
-  },
-  {
-    path: 'tree',
-    name: 'Tree',
-    component: () => import('@/views/tree/index'),
-    meta: {
-      title: 'Tree',
-      icon: 'tree'
-    }
-  }
   ]
+},
+{
+  path: 'tree',
+  name: 'Tree',
+  component: () => import('@/views/tree/index'),
+  meta: {
+    title: 'Tree',
+    icon: 'tree'
+  }
 },
 
 {
@@ -100,6 +115,7 @@ export const constantRoutes = [{
     }
   }]
 },
+
 {
   path: '/comment',
   component: Layout,
