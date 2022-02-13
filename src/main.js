@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @FilePath: /vue-admin-template/src/main.js
+ * @Version: 0.1
+ * @Autor: sgx
+ * @Date: 2022-02-13 11:54:15
+ * @LastEditors: sgx
+ * @LastEditTime: 2022-02-13 16:01:28
+ */
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
@@ -11,6 +20,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import TableEmpty from '@/components/table-empty'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -32,6 +42,7 @@ if (process.env.NODE_ENV === 'production') {
 // Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 Vue.use(ElementUI)
+Vue.component('table-empty', TableEmpty)
 
 Vue.config.productionTip = false
 
