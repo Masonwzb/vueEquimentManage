@@ -26,6 +26,9 @@
         style="width: 100%; margin-bottom: 20px"
         row-key="id"
       >
+        <template slot="empty">
+          <table-empty />
+        </template>
         <el-table-column prop="username" label="用户名" />
         <el-table-column prop="trueName" label="真实姓名" align="center" />
         <el-table-column prop="phoneNumber" label="电话号码" align="center" />
@@ -41,7 +44,7 @@
           </template>
         </el-table-column>
       </el-table>
-      <div class="page-pagination">
+      <div v-if="pagination.total" class="page-pagination">
         <el-pagination
           :current-page="pagination.page"
           :page-sizes="[10, 20, 30, 50, 100]"
@@ -179,7 +182,7 @@ export default {
       pagination: {
         page: 1,
         size: 10,
-        total: 0
+        total: 1
       }
     }
   },
