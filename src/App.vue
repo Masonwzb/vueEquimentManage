@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-13 11:54:15
  * @LastEditors: wzj
- * @LastEditTime: 2022-02-14 11:32:55
+ * @LastEditTime: 2022-02-14 13:24:25
 -->
 <template>
   <div id="app">
@@ -61,5 +61,9 @@ export default {
   display: flex;
   flex-direction: row-reverse;
   margin-top: 16px;
+}
+//鼠标变成手
+::v-deep .mouse-cursor {
+  cursor: pointer;
 }
 </style>

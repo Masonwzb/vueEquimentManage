@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-13 12:10:58
  * @LastEditors: wzj
- * @LastEditTime: 2022-02-14 11:32:39
+ * @LastEditTime: 2022-02-14 14:11:55
 -->
 <template>
   <div class="page-comment">
@@ -14,6 +14,9 @@
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
         <el-form-item label="发帖人">
           <el-input v-model="searchForm.user" placeholder="请输入" />
+        </el-form-item>
+        <el-form-item label="帖子标题">
+          <el-input v-model="searchForm.title" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="发布时间">
           <el-date-picker
@@ -25,50 +28,66 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button @click="reset">重置</el-button>
-          <el-button type="primary" @click="search">查询</el-button>
+          <el-button
+            icon="el-icon-refresh-right"
+            @click="reset"
+          >重置</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-search"
+            @click="search"
+          >查询</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="release"
+          >发布</el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
-      <!-- 功能按钮 -->
-      <div class="page-btn">
-        <el-button type="primary" @click="release">发布</el-button>
-      </div>
-      <!-- 评论列表 -->
-      <el-table
-        :data="tableData"
-        border
-        style="width: 100%"
-        @current-change="handleCurrentChange"
+    <!-- 评论列表 -->
+    <div class="comment-list">
+      <el-card
+        v-for="(item, index) in tableData"
+        :key="index"
+        class="mouse-cursor"
+        @click.native="handleCurrentChange(item)"
       >
-        <template slot="empty">
-          <table-empty />
-        </template>
-        <el-table-column
-          prop="title"
-          label="标题"
-          show-overflow-tooltip
-          align="left"
-          min-width="420"
-        />
-        <el-table-column prop="user" label="发布人" align="center" />
-        <el-table-column prop="time" label="发布时间" align="center" />
-      </el-table>
-      <!-- 分页 -->
-      <div class="page-pagination">
-        <el-pagination
-          :hide-on-single-page="total < pageObj.pageNum * pageObj.pageSize"
-          :current-page="pageObj.pageNum"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="10"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          @size-change="handleSizeChange"
-          @current-change="handlePagination"
-        />
-      </div>
-    </el-card>
+        <div class="list-one">
+          <div class="one-title">{{ item.title }}</div>
+          <div class="one-content" v-html="item.content" />
+          <div class="one-info">
+            <img class="info-avatar" :src="item.avatar">
+            <span
+              class="info-text"
+            ><span class="info-name">{{ item.user }}</span> 发布</span>
+            <span class="info-time">{{ item.time }}</span>
+          </div>
+          <div class="one-footer">
+            <div class="footer-one">
+              <i class="el-icon-view footer-text" />
+              <span class="footer-number">999</span>
+            </div>
+            <div class="footer-one">
+              <i class="el-icon-thumb footer-text" />
+              <span class="footer-number">699</span>
+            </div>
+            <div class="footer-one">
+              <i class="el-icon-chat-dot-square footer-text" />
+              <span class="footer-number">699</span>
+            </div>
+          </div>
+        </div>
+      </el-card>
+      <!-- 加载更多 -->
+      <el-card
+        v-if="total > pageObj.pageNum * pageObj.pageSize"
+        class="mouse-cursor"
+        @click.native="handlePagination"
+      >
+        <div class="list-more">加载更多</div>
+      </el-card>
+    </div>
     <!-- 发布弹窗 -->
     <add-comment :visible="releaseVisible" @handleClose="handleReleaseClose" />
   </div>
@@ -85,12 +104,17 @@ export default {
     return {
       searchForm: {
         user: '', // 发帖人
+        title: '', // 帖子标题
         time: '' // 发布时间
       },
       tableData: [
         {
           title: '委屈得回去无ID户籍去武汉的激情文化基地去居委会ID家',
+          content:
+            '<p>在中台产品的研发过程中，会出现不同的设计规范和实现方式，但其中往往存在很多类似的页面和组件，这些类似的组件会被抽离成一套标准规范。<p>',
           user: 'sgx',
+          avatar:
+            'https://img1.baidu.com/it/u=1595960646,2743732364&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400',
           time: '2022-01-09 14:16:15'
         }
       ], // 评论列表
@@ -128,6 +152,7 @@ export default {
     reset() {
       this.searchForm = {
         user: '', // 发帖人
+        title: '', // 帖子标题
         time: '' // 发布时间
       }
       this.pageObj = {
@@ -155,8 +180,8 @@ export default {
       this.releaseVisible = false
     },
     /**
-     * @description: 选中行,并跳转到详情页
-     * @param {*} row 被选中行的数据
+     * @description: 选中帖子,并跳转到详情页
+     * @param {*} row 被选中帖子的数据
      * @return {*}
      * @author: sgx
      */
@@ -165,17 +190,6 @@ export default {
         path: '/comment-detail',
         query: row
       })
-    },
-    /**
-     * @description: 切换每页查询条数
-     * @param {*} e
-     * @return {*}
-     * @author: sgx
-     */
-    handleSizeChange(pageSize) {
-      this.pageObj.pageSize = pageSize
-      this.pageObj.pageNum = 1
-      this.search()
     },
     /**
      * @description: 切换页码
@@ -203,8 +217,88 @@ export default {
     margin-bottom: 20px;
   }
 
-  ::v-deep .el-table__row {
-    cursor: pointer;
+  .comment-list {
+    width: 100%;
+    margin-top: 20px;
+
+    .list-one {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .one-title {
+        width: 100%;
+        font-size: 20px;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.65);
+      }
+
+      .one-content {
+        width: 100%;
+        font-size: 16px;
+        font-weight: 400;
+        color: #333;
+      }
+
+      .one-info {
+        display: flex;
+        align-items: center;
+
+        .info-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+
+        .info-text {
+          font-size: 14px;
+          margin-left: 16px;
+        }
+
+        .info-name {
+          font-size: 14px;
+          color: #1989fa;
+          margin-right: 6px;
+        }
+
+        .info-time {
+          font-size: 14px;
+          color: rgba(0, 0, 0, 0.25);
+          margin-left: 16px;
+        }
+      }
+
+      .one-footer {
+        display: flex;
+        align-items: center;
+        margin-top: 16px;
+
+        .footer-one {
+          .footer-text {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.45);
+          }
+
+          .footer-number {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.45);
+            margin-left: 6px;
+          }
+        }
+
+        .footer-one + .footer-one {
+          padding-left: 16px;
+          margin-left: 16px;
+          border-left: 1px solid #e8e8e8;
+        }
+      }
+    }
+
+    .list-more {
+      width: 100%;
+      text-align: center;
+      color: #1989fa;
+    }
   }
 }
 </style>

@@ -1,11 +1,11 @@
 <!--
  * @Description: 帖子详情
- * @FilePath: /vue-admin-template/src/views/comment/detail.vue
+ * @FilePath: /vue-equipment-manage/src/views/comment/detail.vue
  * @Version: 0.1
  * @Autor: sgx
  * @Date: 2022-02-13 14:22:33
- * @LastEditors: sgx
- * @LastEditTime: 2022-02-13 17:06:29
+ * @LastEditors: wzj
+ * @LastEditTime: 2022-02-14 13:36:55
 -->
 <template>
   <div class="page-comment-detail">
@@ -146,10 +146,6 @@ export default {
   align-items: flex-start;
   justify-content: space-between;
 
-  .mouse-cursor {
-    cursor: pointer;
-  }
-
   .detail-left {
     width: calc(100% - 380px);
 
@@ -245,7 +241,7 @@ export default {
         }
 
         .one-right {
-          padding-left: 16px;
+          margin-left: 16px;
           display: flex;
           flex-direction: column;
 
