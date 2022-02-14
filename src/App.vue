@@ -4,8 +4,8 @@
  * @Version: 0.1
  * @Autor: sgx
  * @Date: 2022-02-13 11:54:15
- * @LastEditors: sgx
- * @LastEditTime: 2022-02-14 01:06:45
+ * @LastEditors: wzj
+ * @LastEditTime: 2022-02-14 11:32:55
 -->
 <template>
   <div id="app">
@@ -39,7 +39,27 @@ export default {
   border-radius: 6px;
 }
 //隐藏富文本底部广告
-::v-deep .mce-statusbar .mce-container-body{
+::v-deep .mce-statusbar .mce-container-body {
   display: none;
+}
+//el-card之间间隔
+::v-deep .el-card + .el-card {
+  margin-top: 20px;
+}
+//搜索的el-card不需要下边距
+::v-deep .search-card {
+  .el-card__body {
+    padding-bottom: 0;
+  }
+}
+//红色文字按钮
+::v-deep .btn-danger {
+  color: #f56c6c;
+}
+//分页居右
+::v-deep .page-pagination {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: 16px;
 }
 </style>

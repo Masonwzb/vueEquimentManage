@@ -1,5 +1,5 @@
 <template>
-  <div class="user-manage">
+  <div class="page-user-manage">
     <el-card>
       <el-row :gutter="10">
         <el-col :span="4">
@@ -31,27 +31,29 @@
         <el-table-column prop="username" label="用户名" />
         <el-table-column prop="trueName" label="真实姓名" align="center" />
         <el-table-column prop="phoneNumber" label="电话号码" align="center" />
-        <el-table-column prop="gender" label="性别" />
-        <el-table-column label="操作" width="200">
+        <el-table-column prop="gender" label="性别" align="center" />
+        <el-table-column label="操作" width="200" align="center">
           <template slot-scope="scope">
             <el-button type="text" @click="editData(scope.row)">
               编辑
             </el-button>
-            <el-button type="text" @click="deleteData(scope.row)">
+            <el-button type="text" class="btn-danger" @click="deleteData(scope.row)">
               删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        :current-page="pagination.page"
-        :page-sizes="[10, 20, 30, 50, 100]"
-        :page-size="pagination.size"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="pagination.total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <div class="page-pagination">
+        <el-pagination
+          :current-page="pagination.page"
+          :page-sizes="[10, 20, 30, 50, 100]"
+          :page-size="pagination.size"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="pagination.total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
 
     <el-dialog
@@ -82,7 +84,11 @@
           />
         </el-form-item>
         <el-form-item label="性别：" prop="gender">
-          <el-select v-model="postForm.gender" style="width:100%" placeholder="请选择性别">
+          <el-select
+            v-model="postForm.gender"
+            style="width: 100%"
+            placeholder="请选择性别"
+          >
             <el-option label="男" value="1" />
             <el-option label="女" value="2" />
           </el-select>
@@ -101,7 +107,11 @@
           >
             <i slot="default" class="el-icon-plus" />
             <div slot="file" slot-scope="{ file }">
-              <img class="el-upload-list__item-thumbnail" :src="postForm.avatarUrl" alt="">
+              <img
+                class="el-upload-list__item-thumbnail"
+                :src="postForm.avatarUrl"
+                alt=""
+              >
               <span class="el-upload-list__item-actions">
                 <span
                   class="el-upload-list__item-preview"
@@ -155,7 +165,9 @@ export default {
         gender: ''
       },
       postRules: {
-        username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
+        username: [
+          { required: true, trigger: 'blur', message: '请输入用户名' }
+        ],
         password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
       },
       tableData: [
@@ -266,5 +278,10 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
+.page-user-manage{
+  width: 100%;
+  padding: 16px 20px;
+  box-sizing: border-box;
+}
 </style>
