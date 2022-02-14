@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-13 12:10:58
  * @LastEditors: wzj
- * @LastEditTime: 2022-02-14 14:11:55
+ * @LastEditTime: 2022-02-14 15:41:00
 -->
 <template>
   <div class="page-comment">
@@ -231,6 +231,9 @@ export default {
         font-size: 20px;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.65);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .one-content {
@@ -238,6 +241,11 @@ export default {
         font-size: 16px;
         font-weight: 400;
         color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
       }
 
       .one-info {

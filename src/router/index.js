@@ -136,6 +136,20 @@ export const constantRoutes = [{
     },
     hidden: true
   }]
+},
+{
+  path: '/tutorial-video',
+  component: Layout,
+  redirect: '/tutorial-video',
+  children: [{
+    path: '/tutorial-video',
+    name: 'tutorial-video',
+    component: () => import('@/views/tutorialVideo/index.vue'),
+    meta: {
+      title: '器材视频教程',
+      icon: 'el-icon-film'
+    }
+  }]
 }
 ]
 
