@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+// import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
@@ -71,7 +71,7 @@ export default {
       loginForm: {
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur'}],
+        username: [{ required: true, trigger: 'blur' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
