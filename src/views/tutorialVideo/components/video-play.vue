@@ -4,22 +4,41 @@
  * @Version: 0.1
  * @Autor: wzj
  * @Date: 2022-02-14 15:42:06
- * @LastEditors: wzj
- * @LastEditTime: 2022-02-14 16:10:46
+ * @LastEditors: sgx
+ * @LastEditTime: 2022-02-15 00:36:45
 -->
 <template>
   <el-dialog
-    title="播放视频"
+    title="视频播放"
     :visible.sync="visible"
-    width="60%"
+    width="40%"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
     :before-close="handleClose"
+    @closed="showVideo = false"
   >
-    <video-player
-      ref="videoPlayer"
-      class="video-player vjs-custom-skin"
-      :playsinline="true"
-      :options="playerOptions"
-    />
+    <div class="video-dialog">
+      <span class="video-title">{{ selectVideo.title }}</span>
+      <span class="video-content">{{ selectVideo.content }}</span>
+      <div class="video-info">
+        <el-image
+          class="info-avatar"
+          :src="selectVideo.avatar"
+          :preview-src-list="[selectVideo.avatar]"
+        />
+        <span class="info-name">{{ selectVideo.user }}</span>
+        <span class="info-other-text">{{ selectVideo.time }}</span>
+        <span class="info-other-text">{{ selectVideo.volume }}次 播放</span>
+      </div>
+      <div v-if="showVideo" class="video-main">
+        <video-player
+          ref="videoPlayer"
+          class="video-player vjs-custom-skin"
+          :playsinline="true"
+          :options="playerOptions"
+        />
+      </div>
+    </div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="handleClose">关 闭</el-button>
     </span>
@@ -49,8 +68,9 @@ export default {
   },
   data() {
     return {
+      showVideo: true,
       playerOptions: {
-        playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
+        playbackRates: [0.5, 1.0, 1.5, 2.0], // 播放速度
         autoplay: false, // 如果true,浏览器准备好时开始回放。
         muted: false, // 默认情况下将会消除任何音频。
         loop: false, // 导致视频一结束就重新开始。
@@ -79,6 +99,7 @@ export default {
   watch: {
     visible(val) {
       if (val) {
+        this.showVideo = true
         this.playerOptions.sources[0].src = this.selectVideo.video
         this.playerOptions.poster = this.selectVideo.img
       }
@@ -98,4 +119,52 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.video-dialog {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .video-title {
+    font-size: 18px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: bold;
+  }
+
+  .video-content {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: 400;
+    margin-top: 10px;
+  }
+
+  .video-info {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    .info-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+
+    .info-name {
+      font-size: 14px;
+      color: #1989fa;
+      margin-left: 10px;
+    }
+
+    .info-other-text {
+      font-size: 14px;
+      color: rgba(0, 0, 0, 0.25);
+      margin-left: 16px;
+    }
+  }
+
+  .video-main {
+    width: 100%;
+  }
+}
+</style>

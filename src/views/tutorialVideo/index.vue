@@ -4,8 +4,8 @@
  * @Version: 0.1
  * @Autor: wzj
  * @Date: 2022-02-14 14:50:08
- * @LastEditors: wzj
- * @LastEditTime: 2022-02-14 16:14:58
+ * @LastEditors: sgx
+ * @LastEditTime: 2022-02-15 00:34:37
 -->
 <template>
   <div class="page-tutorial-video">
@@ -53,10 +53,7 @@
         class="video-card mouse-cursor"
         @click.native="handelShowVideo(item)"
       >
-        <img
-          class="video-img"
-          :src="item.img"
-        >
+        <img class="video-img" :src="item.img">
         <div class="video-title">{{ item.title }}</div>
         <div class="video-content">{{ item.content }}</div>
         <div class="video-footer">
@@ -64,12 +61,19 @@
             <img class="info-avatar" :src="item.avatar">
             <span class="info-name">{{ item.user }}</span>
           </div>
-          <span class="video-time">{{ item.time }}</span>
+          <div class="footer-right">
+            <span class="video-other">{{ item.volume }}次 播放</span>
+            <span class="video-time">{{ item.time }}</span>
+          </div>
         </div>
       </el-card>
     </el-card>
     <!-- 播放弹窗 -->
-    <video-play :visible="showVideo" :select-video="selectVideo" @handleClose="handleCloseVideo" />
+    <video-play
+      :visible="showVideo"
+      :select-video="selectVideo"
+      @handleClose="handleCloseVideo"
+    />
   </div>
 </template>
 
@@ -96,10 +100,11 @@ export default {
           avatar:
             'https://img1.baidu.com/it/u=1595960646,2743732364&fm=253&fmt=auto&app=138&f=JPEG?w=400&h=400',
           time: '2022-01-09 14:16:15',
+          volume: '999',
           img: 'https://pic.huke88.com/video/cover/2021-11-25/C059EF6D-8C11-4345-BFF0-BF349F6DF974.jpg!/fwfh/1840x1124/quality/80/unsharp/true/format/webp',
-          video:
-            'http://vjs.zencdn.net/v/oceans.mp4'
-        }], // 视频列表
+          video: 'http://vjs.zencdn.net/v/oceans.mp4'
+        }
+      ], // 视频列表
       showVideo: false, // 播放视频弹窗
       selectVideo: {} // 选中的视频
     }
@@ -214,7 +219,7 @@ export default {
 
       .video-title {
         width: 100%;
-        font-size: 20px;
+        font-size: 18px;
         color: rgba(0, 0, 0, 0.85);
         font-weight: bold;
         margin-top: 10px;
@@ -225,7 +230,7 @@ export default {
 
       .video-content {
         width: 100%;
-        font-size: 16px;
+        font-size: 14px;
         color: rgba(0, 0, 0, 0.85);
         font-weight: 400;
         margin-top: 10px;
@@ -256,14 +261,25 @@ export default {
           .info-name {
             font-size: 14px;
             color: #1989fa;
-            margin-left: 6px;
+            margin-left: 8px;
           }
         }
 
-        .video-time {
-          font-size: 14px;
-          color: rgba(0, 0, 0, 0.25);
-          margin-left: 16px;
+        .footer-right {
+          display: flex;
+          align-items: flex-end;
+          flex-direction: column;
+
+          .video-other {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.25);
+          }
+
+          .video-time {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.25);
+            margin-top: 6px;
+          }
         }
       }
     }
