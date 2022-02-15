@@ -66,7 +66,21 @@ export const constantRoutes = [{
       path: 'userManage',
       name: 'userManage',
       component: () => import('@/views/userManage/index'),
-      meta: { title: 'userManage', icon: 'el-icon-user-solid' }
+      meta: { title: '用户管理', icon: 'el-icon-user-solid' }
+    }
+  ]
+},
+
+{
+  path: '/equipInfomation',
+  component: Layout,
+  redirect: '/equipInfomation/index',
+  children: [
+    {
+      path: 'equipInfomation',
+      name: 'equipInfomation',
+      component: () => import('@/views/equipInfomation/index'),
+      meta: { title: '器材信息管理', icon: 'el-icon-video-camera-solid' }
     }
   ]
 },
