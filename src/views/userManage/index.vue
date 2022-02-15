@@ -94,7 +94,7 @@
             <el-option label="女" value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="头像" prop="avatarUrl">
+        <el-form-item label="头像：" prop="avatarUrl">
           <el-upload
             ref="upload"
             action
@@ -146,6 +146,7 @@
   </div>
 </template>
 <script>
+import { getList } from '@/api/userManage'
 export default {
   data() {
     return {
@@ -201,8 +202,17 @@ export default {
       this.dialogVisible = false
     },
     getList() {
-      console.log(33)
       this.tableLoading = true
+      const param = {
+        username: this.queryForm.username,
+        pageNum: this.pagination.page,
+        pageSize: this.pagination.size
+
+      }
+      getList(param).then(result => {
+        console.log(result)
+        this.tableLoading = false
+      })
     },
     onChange(file, fileList) {
       this.imgList = []
