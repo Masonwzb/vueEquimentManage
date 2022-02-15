@@ -22,8 +22,9 @@
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action
           multiple
+          :http-request="uploadImg"
           :file-list="fileList"
           :on-change="handleVideoChange"
         >
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import {fileUpload} from '@/api/file'
 export default {
   name: 'AddVideo',
   props: {
@@ -85,7 +87,20 @@ export default {
     },
     handleVideoChange() {
       console.log(this.fileList)
-    }
+    },
+    async uploadImg(item) {
+      const fileObj = item.file
+      const form = new FormData() // FormData 对象
+      form.append('file', fileObj) // 文件对象  'file_img'是后台接收的参数名
+      form.append('fileType', 'video')
+      const res = await fileUpload(form)
+      // if (+res.data.code === 200) {
+      //   this.postForm.imgUrl = res.data.data.id
+      //   this.postForm.imageUrl = res.data.data.url
+      // } else {
+      //   this.$message.error(res.data.msg)
+      // }
+    },
   }
 }
 </script>
