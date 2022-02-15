@@ -6,8 +6,16 @@
           <el-input v-model="queryForm.name" placeholder="器材名称" clearable />
         </el-col>
         <el-col :span="18">
-          <el-button icon="el-icon-search" type="primary" @click="getList">搜索</el-button>
-          <el-button type="primary" icon="el-icon-plus" @click="addNewEquip">新增器材信息</el-button>
+          <el-button
+            icon="el-icon-search"
+            type="primary"
+            @click="getList"
+          >搜索</el-button>
+          <el-button
+            type="primary"
+            icon="el-icon-plus"
+            @click="addNewEquip"
+          >新增器材信息</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -22,16 +30,21 @@
         <template slot="empty">
           <table-empty />
         </template>
-        <el-table-column prop="name" label="器材名称" />
-        <el-table-column prop="detail" label="详情" />
+        <el-table-column prop="name" show-overflow-tooltip label="器材名称" />
+        <el-table-column prop="detail" show-overflow-tooltip label="详情" />
         <el-table-column prop="imageUrl" label="器材图片" align="center">
-          <template slot-scope="scope">
+          <template slot-scope="{ row }">
             <!-- <el-button type="text" @click="checkDetail(scope.row)">
               {{ scope.row.name }}
             </el-button> -->
             <!-- <el-image :src="require(`${scope.row.imageUrl}`)"> -->
             <div class="equip-image">
-              <el-image class="images" src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202108%2F14%2F20210814161332_e4195.thumb.1000_0.png&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647450133&t=32c7a749770ae70bb78810a95e418226" />
+              <el-image
+                class="images"
+                :src="row.imageUrl"
+                fit="contain"
+                :preview-src-list="[row.imageUrl]"
+              />
             </div>
             <!-- <div v-if="scope.row.imageUrl == ''||scope.row.imageUrl == null" class="image-slot">
             <el-tag type="info">暂无</el-tag>
@@ -99,7 +112,11 @@
           >
             <i slot="default" class="el-icon-plus" />
             <div slot="file" slot-scope="{ file }">
-              <img class="el-upload-list__item-thumbnail" :src="postForm.imageUrl" alt=""/>
+              <img
+                class="el-upload-list__item-thumbnail"
+                :src="postForm.imageUrl"
+                alt=""
+              >
               <span class="el-upload-list__item-actions">
                 <span
                   class="el-upload-list__item-preview"
@@ -119,7 +136,10 @@
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">取消</el-button>
+        <el-button
+          type="primary"
+          @click="dialogVisible = false"
+        >取消</el-button>
         <el-button
           :loading="btnIsLoading"
           type="primary"
@@ -154,7 +174,8 @@ export default {
         {
           name: 'bbbbjt',
           detail: 'handsomeBoy',
-          imageUrl: 'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202103%2F27%2F20210327215633_04df2.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647449104&t=ded1e943ee564c0de6cf49465debcf2c'
+          imageUrl:
+            'https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202103%2F27%2F20210327215633_04df2.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1647449104&t=ded1e943ee564c0de6cf49465debcf2c'
         }
       ],
       pagination: {
@@ -280,8 +301,8 @@ export default {
     height: 100px;
   }
   .images {
-      width: 100%;
-      height: 100px;
+    width: 100px;
+    height: 100px;
   }
 }
 </style>
