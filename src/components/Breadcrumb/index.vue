@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-13 22:30:35
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-16 02:16:59
+ * @LastEditTime: 2022-02-16 02:24:09
 -->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
@@ -41,15 +41,11 @@ export default {
       let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
       const first = matched[0]
 
-      console.log(matched)
-
       if (!this.isDashboard(first)) {
         matched = [{ path: '/dashboard', meta: { title: '首页' }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
-
-      console.log(this.levelList, 'levelList')
     },
     isDashboard(route) {
       const name = route && route.name
