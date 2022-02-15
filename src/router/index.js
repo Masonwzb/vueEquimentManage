@@ -70,7 +70,6 @@ export const constantRoutes = [{
     }
   ]
 },
-
 {
   path: '/equipInfomation',
   component: Layout,
@@ -84,7 +83,17 @@ export const constantRoutes = [{
     }
   ]
 },
-
+{
+  path: '/deviceFirmware',
+  component: Layout,
+  redirect: '/deviceFirmware/index',
+  children: [{
+    path: 'index',
+    name: 'DeviceFirmware',
+    component: () => import('@/views/deviceFirmware'),
+    meta: { title: '器材固件信息管理', icon: 'el-icon-printer' }
+  }]
+},
 {
   path: '/example',
   component: Layout,
