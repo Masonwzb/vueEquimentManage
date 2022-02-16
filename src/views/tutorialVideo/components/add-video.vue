@@ -5,7 +5,7 @@
  * @Autor: sgx
  * @Date: 2022-02-15 20:47:09
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-16 02:31:06
+ * @LastEditTime: 2022-02-16 23:57:31
 -->
 <template>
   <el-dialog
@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import {fileUpload} from '@/api/file'
+// import { fileUpload } from '@/api/file'
 export default {
   name: 'AddVideo',
   props: {
@@ -73,9 +73,7 @@ export default {
       fileList: []
     }
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     /**
      * @description: 关闭弹窗
@@ -104,24 +102,24 @@ export default {
       const form = new FormData() // FormData 对象
       form.append('file', fileObj) // 文件对象  'file_img'是后台接收的参数名
       form.append('fileType', 'video')
-      const res = await fileUpload(form)
+      // const res = await fileUpload(form)
       // if (+res.data.code === 200) {
       //   this.postForm.imgUrl = res.data.data.id
       //   this.postForm.imageUrl = res.data.data.url
       // } else {
       //   this.$message.error(res.data.msg)
       // }
-    },
+    }
   }
 }
 </script>
 
-<style lang='scss' scoped>
-::v-deep .el-upload{
-    width: 100%;
+<style lang="scss" scoped>
+::v-deep .el-upload {
+  width: 100%;
 
-    .el-upload-dragger{
-        width: 100%;
-    }
+  .el-upload-dragger {
+    width: 100%;
+  }
 }
 </style>

@@ -5,14 +5,13 @@
  * @Autor: sgx
  * @Date: 2022-02-14 00:50:06
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-16 03:21:25
+ * @LastEditTime: 2022-02-17 00:02:23
 -->
 <template>
   <el-dialog
     title="发布新帖"
     :visible.sync="visible"
     width="60%"
-    modal-append-to-body
     :before-close="handleClose"
   >
     <el-form ref="form" :model="form" :rules="formRules" label-width="80px">
