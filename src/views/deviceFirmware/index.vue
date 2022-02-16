@@ -26,17 +26,17 @@
       >
         <el-table-column
           fixed
-          prop="date"
+          prop="name"
           label="固件名称"
           width="150"
         />
         <el-table-column
-          prop="province"
+          prop="fileUrl"
           label="文件地址"
           width="150"
         />
         <el-table-column
-          prop="name"
+          prop="detail"
           label="详情"
         />
         <el-table-column
@@ -55,6 +55,17 @@
           </template>
         </el-table-column>
       </el-table>
+      <div v-if="pagination.total" class="page-pagination">
+        <el-pagination
+          layout="total, sizes, prev, pager, next, jumper"
+          :page-sizes="[10, 20, 30, 50, 100]"
+          :current-page="pagination.page"
+          :page-size="pagination.size"
+          :total="pagination.total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </el-card>
 
     <update-device-dialog ref="myDialog"></update-device-dialog>
@@ -101,7 +112,12 @@ export default {
         city: '普陀区',
         address: '上海市普陀区金沙江路 1516 弄',
         zip: 200333
-      }]
+      }],
+      pagination: {
+        page: 1,
+        size: 10,
+        total: 25
+      }
     }
   },
 
@@ -111,6 +127,12 @@ export default {
     },
     addDevice() {
       this.$refs.myDialog.isShow(true)
+    },
+    handleSizeChange() {
+      console.log('handleSizeChange ?')
+    },
+    handleCurrentChange() {
+      console.log('handleCurrentChange')
     }
   }
 }
