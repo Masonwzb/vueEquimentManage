@@ -5,16 +5,13 @@
  * @Autor: wzj
  * @Date: 2022-02-14 14:50:08
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-15 21:03:29
+ * @LastEditTime: 2022-02-16 02:33:53
 -->
 <template>
   <div class="page-tutorial-video">
     <!-- 查询条件 -->
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="发布人">
-          <el-input v-model="searchForm.user" placeholder="请输入" />
-        </el-form-item>
         <el-form-item label="视频标题">
           <el-input v-model="searchForm.title" placeholder="请输入" />
         </el-form-item>
@@ -94,9 +91,10 @@ export default {
   data() {
     return {
       searchForm: {
-        user: '', // 发帖人
         title: '', // 帖子标题
-        time: '' // 发布时间
+        time: '', // 发布时间
+        beginTime: '',
+        endTime: ''
       },
       tableData: [
         {

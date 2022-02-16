@@ -1,3 +1,12 @@
+<!--
+ * @Description:
+ * @FilePath: /vue-equipment-manage/src/components/Breadcrumb/index.vue
+ * @Version: 0.1
+ * @Autor: sgx
+ * @Date: 2022-02-13 22:30:35
+ * @LastEditors: sgx
+ * @LastEditTime: 2022-02-16 02:24:09
+-->
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
