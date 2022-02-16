@@ -95,6 +95,17 @@ export const constantRoutes = [{
   }]
 },
 {
+  path: '/deviceNews',
+  component: Layout,
+  redirect: '/deviceNews/index',
+  children: [{
+    path: 'index',
+    name: 'DeviceFirmware',
+    component: () => import('@/views/deviceNews'),
+    meta: { title: '器材新闻管理', icon: 'el-icon-orange' }
+  }]
+},
+{
   path: '/tutorial-video',
   component: Layout,
   redirect: '/tutorial-video',
