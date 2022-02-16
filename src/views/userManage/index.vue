@@ -62,75 +62,89 @@
       :title="title"
       @closed="dialogClosed"
     >
-      <el-form
-        ref="postForm"
-        :model="postForm"
-        label-position="right"
-        label-width="100px"
-        :rules="postRules"
-      >
-        <el-form-item prop="username" label="用户名：">
-          <el-input v-model="postForm.username" placeholder="请输入用户名" />
-        </el-form-item>
-        <el-form-item label="密码：" prop="password">
-          <el-input v-model="postForm.password" placeholder="请输入密码" />
-        </el-form-item>
-        <el-form-item label="真实姓名：" prop="trueName">
-          <el-input v-model="postForm.trueName" placeholder="请输入真实姓名" />
-        </el-form-item>
-        <el-form-item label="电话号码：" prop="phoneNumber">
-          <el-input
-            v-model="postForm.phoneNumber"
-            placeholder="请输入电话号码"
-          />
-        </el-form-item>
-        <el-form-item label="性别：" prop="gender">
-          <el-select
-            v-model="postForm.gender"
-            style="width: 100%"
-            placeholder="请选择性别"
-          >
-            <el-option label="男" value="1" />
-            <el-option label="女" value="2" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="头像：" prop="avatarUrl">
-          <el-upload
-            ref="upload"
-            action
-            :file-list="imgList"
-            list-type="picture-card"
-            :on-change="onChange"
-            :show-file-list="true"
-            :before-remove="handleRemove"
-            :before-upload="beforeUploadImg"
-            :http-request="uploadImg"
-          >
-            <i slot="default" class="el-icon-plus" />
-            <div slot="file" slot-scope="{ file }">
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="postForm.avatarUrl"
-                alt=""
-              >
-              <span class="el-upload-list__item-actions">
-                <span
-                  class="el-upload-list__item-preview"
-                  @click="handlePictureCardPreview(file)"
+      <el-scrollbar style="height: 380px">
+        <el-form
+          ref="postForm"
+          :model="postForm"
+          label-position="right"
+          label-width="100px"
+          :rules="postRules"
+        >
+          <el-form-item prop="username" label="用户名：">
+            <el-input v-model="postForm.username" placeholder="请输入用户名" />
+          </el-form-item>
+          <el-form-item label="密码：" prop="password">
+            <el-input v-model="postForm.password" show-password placeholder="请输入密码" />
+          </el-form-item>
+          <el-form-item label="真实姓名：" prop="trueName">
+            <el-input v-model="postForm.trueName" placeholder="请输入真实姓名" />
+          </el-form-item>
+          <el-form-item label="电话号码：" prop="phoneNumber">
+            <el-input
+              v-model="postForm.phoneNumber"
+              placeholder="请输入电话号码"
+            />
+          </el-form-item>
+          <el-form-item label="性别：" prop="gender">
+            <el-select
+              v-model="postForm.gender"
+              style="width: 100%"
+              placeholder="请选择性别"
+              clearable
+            >
+              <el-option label="男" value="1" />
+              <el-option label="女" value="2" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="角色：" prop="roles">
+            <el-select
+              v-model="postForm.roles"
+              style="width: 100%"
+              placeholder="请选择角色"
+              clearable
+            >
+              <el-option label="管理员" value="ADMIN" />
+              <el-option label="用户" value="USER" />
+            </el-select>
+          </el-form-item>
+          <el-form-item label="头像：" prop="avatarUrl">
+            <el-upload
+              ref="upload"
+              action
+              :file-list="imgList"
+              list-type="picture-card"
+              :on-change="onChange"
+              :show-file-list="true"
+              :before-remove="handleRemove"
+              :before-upload="beforeUploadImg"
+              :http-request="uploadImg"
+            >
+              <i slot="default" class="el-icon-plus" />
+              <div slot="file" slot-scope="{ file }">
+                <img
+                  class="el-upload-list__item-thumbnail"
+                  :src="postForm.avatarUrl"
+                  alt=""
                 >
-                  <i class="el-icon-zoom-in" />
+                <span class="el-upload-list__item-actions">
+                  <span
+                    class="el-upload-list__item-preview"
+                    @click="handlePictureCardPreview(file)"
+                  >
+                    <i class="el-icon-zoom-in" />
+                  </span>
+                  <span
+                    class="el-upload-list__item-delete"
+                    @click="handleRemove(file)"
+                  >
+                    <i class="el-icon-delete" />
+                  </span>
                 </span>
-                <span
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete" />
-                </span>
-              </span>
-            </div>
-          </el-upload>
-        </el-form-item>
-      </el-form>
+              </div>
+            </el-upload>
+          </el-form-item>
+        </el-form>
+      </el-scrollbar>
       <span slot="footer" class="dialog-footer">
         <el-button
           type="primary"
@@ -161,16 +175,19 @@ export default {
       },
       postForm: {
         username: '',
+        password: '',
         trueName: '',
         phoneNumber: '',
         avatarUrl: '',
-        gender: ''
+        gender: '',
+        roles: ''
       },
       postRules: {
         username: [
           { required: true, trigger: 'blur', message: '请输入用户名' }
         ],
-        password: [{ required: true, trigger: 'blur', message: '请输入密码' }]
+        password: [{ required: true, trigger: 'blur', message: '请输入密码' }],
+        roles: [{ required: true, trigger: 'blur', message: '请选择角色' }]
       },
       tableData: [
         {
@@ -275,6 +292,24 @@ export default {
       // if (this.isCanDel) {
       //   this.saveModelData(this.postForm)
       // }
+    },
+    saveData() {
+      this.$refs.postForm.validate(async(valid) => {
+        if (valid) {
+          this.btnIsLoading = true
+          const param = {
+            ...this.postForm
+          }
+          let result
+          if (this.postForm.id == null) {
+            result = await addUser(param)
+            console.log(result)
+          } else {
+            result = await updateUserById(param)
+            console.log(result)
+          }
+        }
+      })
     },
     addNewUser() {
       this.title = '新增用户'
