@@ -72,6 +72,20 @@ export const constantRoutes = [{
 },
 
 {
+  path: '/dealerManage',
+  component: Layout,
+  redirect: '/dealerManage/index',
+  children: [
+    {
+      path: 'dealerManage',
+      name: 'dealerManage',
+      component: () => import('@/views/dealerManage/index'),
+      meta: { title: '经销商管理', icon: 'el-icon-s-custom' }
+    }
+  ]
+},
+
+{
   path: '/equipInfomation',
   component: Layout,
   redirect: '/equipInfomation/index',
