@@ -5,22 +5,32 @@
  * @Autor: sgx
  * @Date: 2022-02-15 20:47:09
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-15 22:55:31
+ * @LastEditTime: 2022-02-16 02:31:06
 -->
 <template>
   <el-dialog
     title="发布教程视频"
     :visible.sync="visible"
-    width="60%"
+    width="50%"
     :before-close="handleClose"
+    :close-on-click-modal="false"
   >
     <el-form ref="form" :model="form" :rules="formRules" label-width="140px">
       <el-form-item label="标题：" prop="title">
-        <el-input v-model="form.title" />
+        <el-input v-model="form.title" placeholder="请输入" />
+      </el-form-item>
+      <el-form-item label="简介：" prop="detail">
+        <el-input
+          v-model="form.detail"
+          type="textarea"
+          :rows="5"
+          maxlength="200"
+          show-word-limit
+          placeholder="请输入"
+        />
       </el-form-item>
       <el-form-item label="视频上传：" prop="url">
         <el-upload
-          class="upload-demo"
           drag
           action="https://jsonplaceholder.typicode.com/posts/"
           multiple
@@ -52,6 +62,7 @@ export default {
     return {
       form: {
         title: '',
+        detail: '',
         content: ''
       },
       formRules: {
@@ -91,4 +102,11 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+::v-deep .el-upload{
+    width: 100%;
+
+    .el-upload-dragger{
+        width: 100%;
+    }
+}
 </style>
