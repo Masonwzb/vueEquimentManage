@@ -1,3 +1,12 @@
+/*
+ * @Description:
+ * @FilePath: /vue-equipment-manage/src/permission.js
+ * @Version: 0.1
+ * @Autor: sgx
+ * @Date: 2022-02-13 22:30:35
+ * @LastEditors: sgx
+ * @LastEditTime: 2022-02-16 02:21:47
+ */
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
@@ -55,8 +64,13 @@ router.beforeEach(async(to, from, next) => {
       }
     }
   } else {
+    const accessRoutes = await store.dispatch('permission/generateRoutes', ['admin'])
+    router.addRoutes(accessRoutes)
+    next()
+    return
     /* has no token*/
 
+    // eslint-disable-next-line no-unreachable
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()

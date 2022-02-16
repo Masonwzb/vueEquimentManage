@@ -5,16 +5,13 @@
  * @Autor: wzj
  * @Date: 2022-02-14 14:50:08
  * @LastEditors: sgx
- * @LastEditTime: 2022-02-15 00:34:37
+ * @LastEditTime: 2022-02-16 02:33:53
 -->
 <template>
   <div class="page-tutorial-video">
     <!-- 查询条件 -->
     <el-card class="search-card">
       <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-        <el-form-item label="发布人">
-          <el-input v-model="searchForm.user" placeholder="请输入" />
-        </el-form-item>
         <el-form-item label="视频标题">
           <el-input v-model="searchForm.title" placeholder="请输入" />
         </el-form-item>
@@ -53,6 +50,9 @@
         class="video-card mouse-cursor"
         @click.native="handelShowVideo(item)"
       >
+        <div class="video-delete" @click="deleteVideo(item)">
+          <i style="color: #fff" class="el-icon-delete" />
+        </div>
         <img class="video-img" :src="item.img">
         <div class="video-title">{{ item.title }}</div>
         <div class="video-content">{{ item.content }}</div>
@@ -68,6 +68,8 @@
         </div>
       </el-card>
     </el-card>
+    <!-- 添加视频弹窗 -->
+    <add-video :visible="showAddVideo" @handleClose="handleReleaseClose" />
     <!-- 播放弹窗 -->
     <video-play
       :visible="showVideo"
@@ -79,17 +81,20 @@
 
 <script>
 import VideoPlay from './components/video-play'
+import AddVideo from './components/add-video'
 export default {
   name: 'TutorialVideo',
   components: {
-    VideoPlay
+    VideoPlay,
+    AddVideo
   },
   data() {
     return {
       searchForm: {
-        user: '', // 发帖人
         title: '', // 帖子标题
-        time: '' // 发布时间
+        time: '', // 发布时间
+        beginTime: '',
+        endTime: ''
       },
       tableData: [
         {
@@ -105,6 +110,7 @@ export default {
           video: 'http://vjs.zencdn.net/v/oceans.mp4'
         }
       ], // 视频列表
+      showAddVideo: false, // 打开发布视频弹窗
       showVideo: false, // 播放视频弹窗
       selectVideo: {} // 选中的视频
     }
@@ -145,13 +151,20 @@ export default {
       this.search()
     },
     /**
+     * @description: 删除视频
+     * @param {*} id 视频id
+     * @return {*}
+     * @author: sgx
+     */
+    deleteVideo(id) {},
+    /**
      * @description: 打开发布视频弹窗
      * @param {*}
      * @return {*}
      * @author: sgx
      */
     release() {
-      this.releaseVisible = true
+      this.showAddVideo = true
     },
     /**
      * @description: 关闭发布视频弹窗
@@ -160,7 +173,7 @@ export default {
      * @author: sgx
      */
     handleReleaseClose() {
-      this.releaseVisible = false
+      this.showAddVideo = false
     },
     /**
      * @description: 打开播放视频弹窗
@@ -212,6 +225,23 @@ export default {
       padding-bottom: 20px;
       margin-bottom: 20px;
       margin-left: 2%;
+      position: relative;
+      overflow: visible;
+
+      .video-delete {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #f56c6c;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        z-index: 2;
+      }
 
       .video-img {
         width: 100%;
