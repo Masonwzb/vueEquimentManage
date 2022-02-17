@@ -43,7 +43,7 @@ export default {
         ]
       },
       isEdit: false,
-      editContent: null,
+      editContent: null
     }
   },
   methods: {
@@ -86,7 +86,13 @@ export default {
     isShow(visible, theNews) {
       this.dialogVisible = visible
       this.isEdit = !!theNews
+
+      if (!theNews) return
+
       this.editContent = theNews
+      this.ruleForm.title = this.editContent.title
+      this.ruleForm.content = this.editContent.detail
+      this.$refs.newsTinymce.setContent(this.ruleForm.content)
     }
   }
 }

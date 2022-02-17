@@ -43,14 +43,19 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="100"
+          width="150"
         >
           <template slot-scope="scope">
             <el-button
               type="text"
+              size="small"
+              @click="handleDownloadFirmware(scope.row)"
+            >下载固件</el-button>
+            <el-button
+              type="text"
               class="delete-btn-type"
               size="small"
-              @click="handleClick(scope.row)"
+              @click="handleDeleteClick(scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -179,6 +184,14 @@ export default {
     firmwaresUpdated() {
       this.requestParams.title = ''
       this.getFirmwaresList(this.requestParams)
+    },
+    handleDownloadFirmware(row) {
+      if (!row?.fileUrl) return
+
+      const a = document.createElement('a')
+      a.href = row.fileUrl
+      a.setAttribute('download', '')
+      a.click()
     }
   }
 }

@@ -34,7 +34,6 @@
 <script>
 import { fileUpload } from '@/api/file'
 import { addFirmware } from '@/api/deviceFirmware'
-import { updateNews } from '@/api/deviceNews'
 
 export default {
   name: 'UpdateDevice',
@@ -64,7 +63,7 @@ export default {
             detail
           })
 
-          if (res) {
+          if (res?.data) {
             this.$message({
               message: '保存成功',
               type: 'error'
@@ -94,7 +93,8 @@ export default {
       formData.append('file', file)
       formData.append('filename', file.name)
       const res = await fileUpload(formData)
-      if (res) {
+      if (res?.data) {
+        this.ruleForm.fileUrl = res.data
         console.log('固件上传成功 ？ ', res)
       }
     }
