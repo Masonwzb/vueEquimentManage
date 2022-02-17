@@ -68,12 +68,12 @@
       </div>
     </el-card>
 
-    <update-device-dialog ref="myDialog"></update-device-dialog>
+    <update-device-dialog ref="myDialog" />
   </div>
 </template>
 
 <script>
-import updateDeviceDialog from './updateDevice.vue';
+import updateDeviceDialog from './updateDevice.vue'
 
 export default {
   name: 'DeviceFirmware',

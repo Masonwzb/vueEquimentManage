@@ -2,11 +2,14 @@
   <el-dialog
     title="更新新闻"
     :visible.sync="dialogVisible"
-    width="35%"
+    width="50"
   >
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
       <el-form-item label="新闻标题" prop="name">
         <el-input v-model="ruleForm.name" />
+      </el-form-item>
+      <el-form-item>
+        <tinymce ref="newsTinymce" v-model="ruleForm.content" :height="300" />
       </el-form-item>
       <el-form-item>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -17,14 +20,21 @@
 </template>
 
 <script>
+import Tinymce from '@/components/Tinymce'
+
 export default {
   name: 'UpdateNews',
+
+  components: {
+    Tinymce
+  },
 
   data() {
     return {
       dialogVisible: false,
       ruleForm: {
         name: '',
+        content: ''
       },
       rules: {
         name: [

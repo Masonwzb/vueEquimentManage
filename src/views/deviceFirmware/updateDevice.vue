@@ -4,7 +4,7 @@
     :visible.sync="dialogVisible"
     width="35%"
   >
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+    <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
       <el-form-item label="固件名称" prop="name">
         <el-input v-model="ruleForm.name" />
       </el-form-item>
@@ -15,7 +15,7 @@
           action="https://jsonplaceholder.typicode.com/posts/"
           multiple
         >
-          <i class="el-icon-upload"></i>
+          <i class="el-icon-upload" />
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </el-upload>
       </el-form-item>

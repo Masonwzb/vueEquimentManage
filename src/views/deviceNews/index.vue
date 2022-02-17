@@ -68,7 +68,7 @@
       </div>
     </el-card>
 
-    <update-news-dialog ref="myNewsDialog"></update-news-dialog>
+    <update-news-dialog ref="myNewsDialog" />
   </div>
 </template>
 
