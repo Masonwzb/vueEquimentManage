@@ -3,12 +3,13 @@
     <el-card>
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-input placeholder="固件名称" clearable />
+          <el-input v-model="searchValue" placeholder="固件名称" clearable />
         </el-col>
         <el-col :span="18">
           <el-button
             icon="el-icon-search"
             type="primary"
+            @click="searchByTitle"
           >搜索</el-button>
           <el-button
             type="primary"
@@ -26,31 +27,39 @@
       >
         <el-table-column
           fixed
-          prop="name"
+          prop="title"
           label="新闻标题"
-          width="150"
-        />
-        <el-table-column
-          prop="fileUrl"
-          label="文件地址"
-          width="150"
+          width="500"
         />
         <el-table-column
           prop="detail"
           label="详情"
-        />
+        >
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              plain
+              size="small"
+              @click="viewDetail(scope.row)"
+            >器材新闻详情查看</el-button>
+          </template>
+        </el-table-column>
         <el-table-column
           fixed="right"
           label="操作"
           width="100"
         >
           <template slot-scope="scope">
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="handleEditClick(scope.row)"
+            >编辑</el-button>
             <el-button
               type="text"
               class="delete-btn-type"
               size="small"
-              @click="handleClick(scope.row)"
+              @click="handleDeleteClick(scope.row)"
             >删除</el-button>
           </template>
         </el-table-column>
@@ -68,71 +77,95 @@
       </div>
     </el-card>
 
-    <update-news-dialog ref="myNewsDialog" />
+    <update-news-dialog ref="myUpdateNewsDialog" @newsUpdated="toGetNewestList" />
+    <news-detail-dialog ref="myNewDetailDialog"/>
   </div>
 </template>
 
 <script>
 import UpdateNewsDialog from './updateNews.vue'
+import NewsDetailDialog from './newDetail.vue'
+import { getNewsListByPageInfo, deleteNews } from '@/api/deviceNews'
 
 export default {
   name: 'DeviceNews',
 
   components: {
-    UpdateNewsDialog
+    UpdateNewsDialog,
+    NewsDetailDialog
   },
 
   data() {
     return {
       tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
+        title: '王小虎',
+        detail: '上海市普陀区金沙江路 1518 弄'
       }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1517 弄',
-        zip: 200333
+        title: '王小虎',
+        detail: '上海市普陀区金沙江路 1517 弄'
       }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1519 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1516 弄',
-        zip: 200333
+        title: '王小虎',
+        detail: '上海市普陀区金沙江路 1519 弄'
       }],
       pagination: {
         page: 1,
         size: 10,
         total: 25
-      }
+      },
+      requestParams: {
+        title: '',
+        pageNum: 1,
+        pageSize: 10
+      },
+      searchValue: '',
     }
   },
 
   methods: {
-    handleClick(row) {
-      console.log(row)
+    handleEditClick(row) {
+      this.$refs.myUpdateNewsDialog.isShow(true, row)
+    },
+    async handleDeleteClick(row) {
+      const { id } = row
+      await deleteNews({ id })
+      await this.getNewsList(this.requestParams)
     },
     addDevice() {
-      this.$refs.myNewsDialog.isShow(true)
+      this.$refs.myUpdateNewsDialog.isShow(true)
     },
-    handleSizeChange() {
-      console.log('handleSizeChange ? news')
+    handleSizeChange(size) {
+      this.requestParams.pageSize = parseInt(size, 10)
+      this.getNewsList(this.requestParams)
     },
-    handleCurrentChange() {
-      console.log('handleCurrentChange ? news')
+    handleCurrentChange(page) {
+      this.requestParams.pageNum = parseInt(page, 10)
+      this.getNewsList(this.requestParams)
+    },
+    async getNewsList(params) {
+      const { title, pageNum, pageSize } = params
+
+      const res = await getNewsListByPageInfo({
+        title: title || '',
+        pageNum,
+        pageSize
+      })
+
+      if (res) {
+        console.log('get news list')
+      }
+    },
+    viewDetail(row) {
+      console.log('the detail', row)
+      this.$refs.myNewDetailDialog.isShow(row.detail)
+    },
+    async searchByTitle() {
+      this.requestParams.title = this.searchValue
+      await this.getNewsList(this.requestParams)
+      this.searchValue = ''
+    },
+    toGetNewestList() {
+      this.requestParams.title = ''
+      this.getNewsList(this.requestParams)
     }
   }
 }

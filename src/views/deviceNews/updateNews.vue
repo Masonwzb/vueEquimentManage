@@ -1,8 +1,8 @@
 <template>
   <el-dialog
-    title="更新新闻"
+    :title="isEdit ? '更新新闻内容' : '新增新闻内容'"
     :visible.sync="dialogVisible"
-    width="50"
+    width="50%"
   >
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
       <el-form-item label="新闻标题" prop="name">
@@ -21,6 +21,7 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
+import { addNews, updateNews } from '@/api/deviceNews'
 
 export default {
   name: 'UpdateNews',
@@ -38,24 +39,45 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入固件名称', trigger: 'blur' }
+          { required: true, message: '请输入新闻标题', trigger: 'blur' }
         ]
-      }
+      },
+      isEdit: false,
+      editContent: null,
     }
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async(valid) => {
         if (valid) {
-          alert('submit!')
+          let res
+          const { name, content } = this.ruleForm
+          if (!this.isEdit) {
+            res = await addNews({
+              title: name,
+              detail: content
+            })
+          } else {
+            res = await updateNews({
+              id: this.editContent.id,
+              title: name,
+              detail: content
+            })
+          }
+
+          if (res) {
+            this.$emit('newsUpdated')
+          }
         } else {
           console.log('error submit!!')
           return false
         }
       })
     },
-    isShow(visible) {
+    isShow(visible, theNews) {
       this.dialogVisible = visible
+      this.isEdit = !!theNews
+      this.editContent = theNews
     }
   }
 }
