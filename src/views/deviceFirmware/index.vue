@@ -3,12 +3,13 @@
     <el-card>
       <el-row :gutter="10">
         <el-col :span="4">
-          <el-input placeholder="固件名称" clearable />
+          <el-input v-model="searchValue" placeholder="固件名称" clearable />
         </el-col>
         <el-col :span="18">
           <el-button
             icon="el-icon-search"
             type="primary"
+            @click="searchByTitle"
           >搜索</el-button>
           <el-button
             type="primary"
@@ -45,7 +46,6 @@
           width="100"
         >
           <template slot-scope="scope">
-            <el-button type="text" size="small">编辑</el-button>
             <el-button
               type="text"
               class="delete-btn-type"
@@ -68,18 +68,19 @@
       </div>
     </el-card>
 
-    <update-device-dialog ref="myDialog" />
+    <update-firmware-dialog ref="myDialog" @firmwaresUpdated="firmwaresUpdated" />
   </div>
 </template>
 
 <script>
-import updateDeviceDialog from './updateDevice.vue'
+import updateFirmwareDialog from './updateFirmware.vue'
+import { getFirmwaresListByPageInfo, deleteFirmware } from '@/api/deviceFirmware'
 
 export default {
   name: 'DeviceFirmware',
 
   components: {
-    updateDeviceDialog
+    updateFirmwareDialog
   },
 
   data() {
@@ -117,22 +118,67 @@ export default {
         page: 1,
         size: 10,
         total: 25
-      }
+      },
+      requestParams: {
+        title: '',
+        pageNum: 1,
+        pageSize: 10
+      },
+      searchValue: ''
     }
   },
 
   methods: {
-    handleClick(row) {
-      console.log(row)
+    async handleDeleteClick(row) {
+      const { id } = row
+      const res = await deleteFirmware({ id })
+      if (res) {
+        this.$message({
+          message: '删除成功',
+          type: 'error'
+        })
+        await this.getFirmwaresList(this.requestParams)
+      } else {
+        this.$message({
+          message: '删除失败',
+          type: 'error'
+        })
+      }
     },
     addDevice() {
       this.$refs.myDialog.isShow(true)
     },
-    handleSizeChange() {
-      console.log('handleSizeChange ?')
+    handleSizeChange(size) {
+      this.requestParams.pageSize = parseInt(size, 10)
+      this.getFirmwaresList(this.requestParams)
     },
-    handleCurrentChange() {
-      console.log('handleCurrentChange')
+    handleCurrentChange(page) {
+      this.requestParams.pageNum = parseInt(page, 10)
+      this.getFirmwaresList(this.requestParams)
+    },
+    async getFirmwaresList(params) {
+      const { title, pageNum, pageSize } = params
+
+      const res = await getFirmwaresListByPageInfo({
+        title: title || '',
+        pageNum,
+        pageSize
+      })
+
+      if (res?.data?.list) {
+        this.pagination.total = res.data.total
+        this.tableData = res.data.list
+        console.log('get news list')
+      }
+    },
+    async searchByTitle() {
+      this.requestParams.title = this.searchValue
+      await this.getFirmwaresList(this.requestParams)
+      this.searchValue = ''
+    },
+    firmwaresUpdated() {
+      this.requestParams.title = ''
+      this.getFirmwaresList(this.requestParams)
     }
   }
 }

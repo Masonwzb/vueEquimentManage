@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="更新固件"
+    title="新增固件"
     :visible.sync="dialogVisible"
     width="35%"
   >
@@ -12,8 +12,9 @@
         <el-upload
           class="upload-demo"
           drag
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action
           multiple
+          :http-request="uploadFirmware"
         >
           <i class="el-icon-upload" />
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -31,6 +32,10 @@
 </template>
 
 <script>
+import { fileUpload } from '@/api/file'
+import { addFirmware } from '@/api/deviceFirmware'
+import { updateNews } from '@/api/deviceNews'
+
 export default {
   name: 'UpdateDevice',
 
@@ -51,9 +56,26 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
+      this.$refs[formName].validate(async(valid) => {
         if (valid) {
-          alert('submit!')
+          const { name, detail } = this.ruleForm
+          const res = await addFirmware({
+            title: name,
+            detail
+          })
+
+          if (res) {
+            this.$message({
+              message: '保存成功',
+              type: 'error'
+            })
+            this.$emit('firmwaresUpdated')
+          } else {
+            this.$message({
+              message: '保存失败',
+              type: 'error'
+            })
+          }
         } else {
           console.log('error submit!!')
           return false
@@ -62,6 +84,19 @@ export default {
     },
     isShow(visible) {
       this.dialogVisible = visible
+    },
+    async uploadFirmware(fileData) {
+      const { file } = fileData
+      console.log('自定义上传 ？？？ ', file, file.name)
+      if (!file) return
+
+      const formData = new window.FormData()
+      formData.append('file', file)
+      formData.append('filename', file.name)
+      const res = await fileUpload(formData)
+      if (res) {
+        console.log('固件上传成功 ？ ', res)
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export function fileUpload(data) {
-  return request ({
+  return request({
     url: '/general/fileUpload',
     method: 'post',
     data

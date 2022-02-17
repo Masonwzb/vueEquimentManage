@@ -14,7 +14,7 @@
           <el-button
             type="primary"
             icon="el-icon-plus"
-            @click="addDevice"
+            @click="addNews"
           >新增新闻</el-button>
         </el-col>
       </el-row>
@@ -84,7 +84,7 @@
 
 <script>
 import UpdateNewsDialog from './updateNews.vue'
-import NewsDetailDialog from './newDetail.vue'
+import NewsDetailDialog from './newsDetail.vue'
 import { getNewsListByPageInfo, deleteNews } from '@/api/deviceNews'
 
 export default {
@@ -117,7 +117,7 @@ export default {
         pageNum: 1,
         pageSize: 10
       },
-      searchValue: '',
+      searchValue: ''
     }
   },
 
@@ -127,10 +127,21 @@ export default {
     },
     async handleDeleteClick(row) {
       const { id } = row
-      await deleteNews({ id })
-      await this.getNewsList(this.requestParams)
+      const res = await deleteNews({ id });
+      if (res) {
+        this.$message({
+          message: '删除成功',
+          type: 'error'
+        })
+        await this.getNewsList(this.requestParams)
+      } else {
+        this.$message({
+          message: '删除失败',
+          type: 'error'
+        })
+      }
     },
-    addDevice() {
+    addNews() {
       this.$refs.myUpdateNewsDialog.isShow(true)
     },
     handleSizeChange(size) {
@@ -150,7 +161,9 @@ export default {
         pageSize
       })
 
-      if (res) {
+      if (res?.data?.list) {
+        this.pagination.total = res.data.total
+        this.tableData = res.data.list
         console.log('get news list')
       }
     },
@@ -171,6 +184,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.delete-btn-type {
+  &.el-button--text {
+     color: #F56C6C;
+   }
+}
 </style>

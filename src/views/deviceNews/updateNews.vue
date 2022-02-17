@@ -66,7 +66,16 @@ export default {
           }
 
           if (res) {
+            this.$message({
+              message: '保存成功',
+              type: 'error'
+            })
             this.$emit('newsUpdated')
+          } else {
+            this.$message({
+              message: '保存失败',
+              type: 'error'
+            })
           }
         } else {
           console.log('error submit!!')
