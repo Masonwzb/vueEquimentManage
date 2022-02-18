@@ -12,8 +12,7 @@
         <el-upload
           class="upload-demo"
           drag
-          action
-          multiple
+          :limit="1"
           :http-request="uploadFirmware"
         >
           <i class="el-icon-upload" />
@@ -57,11 +56,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
-          const { title, detail } = this.ruleForm
-          const res = await addFirmware({
-            title,
-            detail
-          })
+          const { title, detail, fileUrl } = this.ruleForm
+          let params = { title, detail }
+          fileUrl && (params = { ...params, fileUrl })
+          const res = await addFirmware(params)
 
           if (res?.data) {
             this.$message({
@@ -91,7 +89,7 @@ export default {
 
       const formData = new window.FormData()
       formData.append('file', file)
-      formData.append('filename', file.name)
+      formData.append('fileType', 'driver')
       const res = await fileUpload(formData)
       if (res?.data) {
         this.ruleForm.fileUrl = res.data

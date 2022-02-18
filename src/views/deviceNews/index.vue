@@ -78,7 +78,7 @@
     </el-card>
 
     <update-news-dialog ref="myUpdateNewsDialog" @newsUpdated="toGetNewestList" />
-    <news-detail-dialog ref="myNewDetailDialog"/>
+    <news-detail-dialog ref="myNewDetailDialog" />
   </div>
 </template>
 
@@ -98,13 +98,13 @@ export default {
   data() {
     return {
       tableData: [{
-        title: '王小虎',
+        title: '王小虎1',
         detail: '上海市普陀区金沙江路 1518 弄'
       }, {
-        title: '王小虎',
+        title: '王小虎2',
         detail: '上海市普陀区金沙江路 1517 弄'
       }, {
-        title: '王小虎',
+        title: '王小虎3',
         detail: '上海市普陀区金沙江路 1519 弄'
       }],
       pagination: {
@@ -127,7 +127,7 @@ export default {
     },
     async handleDeleteClick(row) {
       const { id } = row
-      const res = await deleteNews({ id });
+      const res = await deleteNews({ id })
       if (res) {
         this.$message({
           message: '删除成功',

@@ -27,14 +27,14 @@
       >
         <el-table-column
           fixed
-          prop="name"
+          prop="title"
           label="固件名称"
-          width="150"
+          width="250"
         />
         <el-table-column
           prop="fileUrl"
           label="文件地址"
-          width="150"
+          width="300"
         />
         <el-table-column
           prop="detail"
@@ -91,33 +91,17 @@ export default {
   data() {
     return {
       tableData: [{
-        date: '2016-05-02',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1518 弄',
-        zip: 200333
+        title: '王小虎1',
+        detail: '上海市普陀区金沙江路 1518 弄',
+        fileUrl: '12345'
       }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1517 弄',
-        zip: 200333
+        title: '王小虎2',
+        detail: '上海市普陀区金沙江路 1517 弄',
+        fileUrl: '123456'
       }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1519 弄',
-        zip: 200333
-      }, {
-        date: '2016-05-03',
-        name: '王小虎',
-        province: '上海',
-        city: '普陀区',
-        address: '上海市普陀区金沙江路 1516 弄',
-        zip: 200333
+        title: '王小虎3',
+        detail: '上海市普陀区金沙江路 1519 弄',
+        fileUrl: '123456'
       }],
       pagination: {
         page: 1,
@@ -173,7 +157,6 @@ export default {
       if (res?.data?.list) {
         this.pagination.total = res.data.total
         this.tableData = res.data.list
-        console.log('get news list')
       }
     },
     async searchByTitle() {
