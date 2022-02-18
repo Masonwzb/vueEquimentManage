@@ -5,11 +5,11 @@
     width="50%"
   >
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="新闻标题" prop="name">
-        <el-input v-model="ruleForm.name" />
+      <el-form-item label="新闻标题" prop="title">
+        <el-input v-model="ruleForm.title" />
       </el-form-item>
       <el-form-item>
-        <tinymce ref="newsTinymce" v-model="ruleForm.content" :height="300" />
+        <tinymce ref="newsTinymce" v-model="ruleForm.detail" :height="300" />
       </el-form-item>
       <el-form-item>
         <el-button @click="dialogVisible = false">取消</el-button>
@@ -34,8 +34,8 @@ export default {
     return {
       dialogVisible: false,
       ruleForm: {
-        name: '',
-        content: ''
+        title: '',
+        detail: ''
       },
       rules: {
         name: [
@@ -51,17 +51,17 @@ export default {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
           let res
-          const { name, content } = this.ruleForm
+          const { title, detail } = this.ruleForm
           if (!this.isEdit) {
             res = await addNews({
-              title: name,
-              detail: content
+              title,
+              detail
             })
           } else {
             res = await updateNews({
               id: this.editContent.id,
-              title: name,
-              detail: content
+              title,
+              detail
             })
           }
 
@@ -90,9 +90,10 @@ export default {
       if (!theNews) return
 
       this.editContent = theNews
-      this.ruleForm.title = this.editContent.title
-      this.ruleForm.content = this.editContent.detail
-      this.$refs.newsTinymce.setContent(this.ruleForm.content)
+      const { title, detail } = this.editContent
+      this.ruleForm.title = title
+      this.ruleForm.detail = detail
+      this.$refs.newsTinymce.setContent(detail)
     }
   }
 }

@@ -5,8 +5,8 @@
     width="35%"
   >
     <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="100px" class="demo-ruleForm">
-      <el-form-item label="固件名称" prop="name">
-        <el-input v-model="ruleForm.name" />
+      <el-form-item label="固件名称" prop="title">
+        <el-input v-model="ruleForm.title" />
       </el-form-item>
       <el-form-item label="固件上传">
         <el-upload
@@ -42,7 +42,7 @@ export default {
     return {
       dialogVisible: false,
       ruleForm: {
-        name: '',
+        title: '',
         fileUrl: '',
         detail: ''
       },
@@ -57,9 +57,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async(valid) => {
         if (valid) {
-          const { name, detail } = this.ruleForm
+          const { title, detail } = this.ruleForm
           const res = await addFirmware({
-            title: name,
+            title,
             detail
           })
 
